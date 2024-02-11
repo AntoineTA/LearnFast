@@ -9,14 +9,15 @@
     <meta charset="UTF-8">
     <meta name="description" content="A eLearning application for AWD Final Project">
     <title>LearnFast</title>
-    
+
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
     {% endcompress %}
 </head>
 
 <body>
-    <nav>
+    {% include './main/navbar.html' %}
+    <!-- <nav>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="{% url 'profile:list' %}">Users</a></li>
@@ -31,9 +32,9 @@
                 <li><a href="{% url 'registration:signup' %}">Sign Up</a></li>
                 <li><a href="{% url 'registration:login' %}">Login</a></li>
             {% endif %}
-            <li class="font-semibold">Test Tailwind</li>
+            <li class="font-extralight">Test Tailwind</li>
         </ul>
-    </nav>
+    </nav> -->
     
     <main>
         {% block content %}Failed to render content{% endblock %}

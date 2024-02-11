@@ -4,5 +4,8 @@
   },
   "dependencies": {
     "flowbite": "^2.2.1"
+  },
+  "scripts": {
+    "watch": "tailwindcss -i ./src/styles/tailwind.css -o ./dist/styles/tailwind.css --watch"
   }
 }
