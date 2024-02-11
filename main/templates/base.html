@@ -1,4 +1,6 @@
 {% load main_tags %}
+{% load compress %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,6 +9,10 @@
     <meta charset="UTF-8">
     <meta name="description" content="A eLearning application for AWD Final Project">
     <title>LearnFast</title>
+    
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
 </head>
 
 <body>
@@ -25,6 +31,7 @@
                 <li><a href="{% url 'registration:signup' %}">Sign Up</a></li>
                 <li><a href="{% url 'registration:login' %}">Login</a></li>
             {% endif %}
+            <li class="font-semibold">Test Tailwind</li>
         </ul>
     </nav>
     
@@ -35,6 +42,8 @@
     <footer>
         <p>{% now "Y" %} LearnFast. AWD Final.</p>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 </body>
 
 </html>
