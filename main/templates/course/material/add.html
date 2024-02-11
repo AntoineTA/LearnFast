@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add Materials</h1>
+
+{% if form.errors %}
+    {{ form.errors }}
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>{{ form.name.label_tag }}</td>
+            <td>{{ form.name }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.file.label_tag }}</td>
+            <td>{{ form.file }}</td>
+        </tr>
+    </table>
+
+    <input type="submit" value="save">
+</form>
+{% endblock %}

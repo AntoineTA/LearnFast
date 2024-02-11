@@ -1,0 +1,10 @@
+<h2>Feedback</h2>
+<ul>
+    {% for feedback in course.feedbacks.all %}
+        <li>{{ feedback.grade }} | {{ feedback.comment }} | {{ feedback.author }}</li>
+    {% endfor %}
+</ul>
+
+{% if request.user in course.students.all %}
+    <a href="{% url 'course:feedback_add' course.id %}">Add Feedback</a>
+{% endif %}

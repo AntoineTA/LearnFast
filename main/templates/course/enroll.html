@@ -1,0 +1,6 @@
+{% if request.user not in course.students.all and request.user != course.teacher %}
+    <form method="post" action="{% url 'course:enroll' course.id %}">
+        {% csrf_token %}
+        <button type="submit">Enroll</button>
+    </form>
+{% endif %}

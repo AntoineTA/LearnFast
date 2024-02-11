@@ -1,0 +1,18 @@
+{% load main_tags %}
+
+{% if request.user|has_group:'Teachers'%}
+    <h2>Students</h2>
+    <h3>Enrolled</h3>
+    <ul>
+        {% for student in course.students.all %}
+            <li>{{ student }} | <a href="{% url 'course:student_block' course.id student.id %}">Block</a></li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Blocked</h3>
+    <ul>
+        {% for student in course.blocked_students.all %}
+            <li>{{ student }} | <a href="{% url 'course:student_unblock' course.id student.id %}">Unblock</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}

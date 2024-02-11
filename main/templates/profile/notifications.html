@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Notifications for {{ request.user }}</h1>
+  {% if notification_list %}
+    <ul>
+    {% for notification in notification_list %}
+        {% if not notification.read %}
+            <li>{{ notification.text }} (unread)</li>
+        {% else %}
+            <li>{{ notification.text }} (read)</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No notifications found.</p>
+  {% endif %}
+{% endblock %}

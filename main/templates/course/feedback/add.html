@@ -1,0 +1,21 @@
+<h1>Add Feedback</h1>
+
+{% if form.errors %}
+    {{ form.errors }}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>{{ form.grade.label_tag }}</td>
+            <td>{{ form.grade }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.comment.label_tag }}</td>
+            <td>{{ form.comment }}</td>
+        </tr>
+    </table>
+
+    <input type="submit" value="save">
+</form>

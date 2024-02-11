@@ -1,0 +1,28 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import *
+
+class SignupForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'bio', 'company')
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ('name',)
+
+class CourseFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = CourseFeedback
+        fields = ('grade', 'comment')
+
+class CourseMaterialForm(forms.ModelForm):
+    class Meta:
+        model = CourseMaterial
+        fields = ('name', 'file',)

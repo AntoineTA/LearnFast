@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load main_tags %}
+
+{% block content %}
+    <h1>Courses in LearnFast</h1>
+    <ul>
+        {% for course in object_list %}
+            <li><a href="{% url 'course:detail' course.id %}">{{ course }}</a></li>
+        {% endfor %}
+    </ul>
+
+    {% if request.user|has_group:'Teachers'%}
+        <a href="{% url 'course:create' %}">Add a Course</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+<h2>Material</h2>
+<ul>
+    {% for material in course.materials.all %}
+        <li><a href="{{ material.file.url }}">{{ material.name }}</a></li>
+    {% endfor %}
+</ul>
+
+{% if request.user == course.teacher %}
+    <a href="{% url 'course:material_add' course.id %}">Add Material</a>
+{% endif %}

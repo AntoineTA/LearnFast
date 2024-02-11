@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ course.name }}</h1>
+
+{% if request.user in course.blocked_students.all %}
+    <div>You have been block from this course.</div>
+{% else %}
+
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>{{ course.name }}</td>
+        </tr>
+        <tr>
+            <td>Teacher</td>
+            <td>{{ course.teacher }}</td>
+        </tr>
+    </table>
+
+    {% include "./material/list.html" %}
+    {% include "./feedback/list.html" %}
+
+    {% include "./student/list.html" %}
+
+    {% include "./enroll.html" %}
+{% endif %}
+
+
+
+
+
+
+
+    
+
+
+
+    
+{% endblock %}
