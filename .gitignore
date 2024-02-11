@@ -1,2 +1,5 @@
 /lf.bat
 /media
+/db.sqlite3
+node_modules/
+/__pycache__/
