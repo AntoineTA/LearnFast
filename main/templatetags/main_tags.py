@@ -1,8 +1,10 @@
-# From https://stackoverflow.com/a/34572799
 from django import template
+from datetime import timedelta
+from django.utils import timezone
 
 register = template.Library() 
 
+# From https://stackoverflow.com/a/34572799
 @register.filter(name='has_group') 
 def has_group(user, group_name):
     return user.groups.filter(name=group_name).exists()
@@ -21,3 +23,8 @@ def displayrole(user):
     if user.groups.filter(name='Teachers').exists():
         role = 'Teacher'
     return role
+
+@register.simple_tag
+def is_online(user):
+    # Check if the user has made a request in the last minute
+    return user.last_request >= timezone.now() - timedelta(minutes=1)

@@ -2,9 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
+    status = models.CharField(max_length=100, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     company = models.CharField(max_length=100, blank=True)
     avatar = models.ImageField(upload_to='main/profile/avatars/', blank=True, null=True)
+    last_request = models.DateTimeField(auto_now_add=True)
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
