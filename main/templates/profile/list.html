@@ -1,6 +1,33 @@
 {% extends "base.html" %}
+{% load main_tags %}
 
 {% block content %}
+
+<ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+    {% for user in user_list %}
+    <li class="py-3 sm:py-4 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
+        <a href="{% url 'profile:detail' user.id %}">
+        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+          <div class="flex-shrink-0">
+             <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Neil image">
+          </div>
+          <div class="flex-1 min-w-0">
+             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                {% displayname user %}
+             </p>
+             <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                {% displayrole user %}
+             </p>
+          </div>
+          <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+             $2367
+          </div>
+        </div>
+    </a>
+    </li>
+    {% endfor %}
+ </ul>
+
     <h1>Users of LearnFast</h1>
     <ul>
         {% for user in user_list %}
