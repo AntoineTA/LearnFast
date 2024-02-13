@@ -18,9 +18,10 @@
 <body>
     {% include './main/nav/bar.html' %}
     
-    <main>
-        {% block content %}Failed to render content{% endblock %}
-    </main>
+    <div class="container mt-4 max-w-sm mx-auto">
+        {% block content %}
+        {% endblock %}
+    </div>
     
     <footer>
         <p>{% now "Y" %} LearnFast. AWD Final.</p>
