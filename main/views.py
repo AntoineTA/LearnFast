@@ -24,10 +24,13 @@ class UserListView(UserPassesTestMixin, ListView):
             queryset = queryset.filter(groups__in=[group])
         return queryset
 
-class SignupView(TemplateView):
+class SignupView(TemplateView, UserPassesTestMixin):
     template_name = 'registration/signup.html'
 
     def get(self, request):
+        if (self.request.user.is_authenticated):
+            return redirect('profile:own')
+            
         form = SignupForm()
         return render(request, self.template_name, {'form': form})
 
@@ -43,6 +46,7 @@ class SignupView(TemplateView):
 
             # Log the user in
             login(request, user)
+            return redirect('profile:own')
 
         return render(request, self.template_name, 
             {'form': form})

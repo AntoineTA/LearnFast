@@ -2,34 +2,33 @@
 
 {% block content %}
 
-{% if form.errors %}
-    {{ form.errors }}
-{% endif %}
+<form method="POST" class="max-w-sm mx-auto" enctype="multipart/form-data">
+  {% csrf_token %}
 
-{% if user.is_authenticated %}
-    <p>Thank you for registering, {{ user.username }}!</p>
-{% else %}
+  <div class="mb-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+    {{ form.username }}
+    {% if form.errors.username %}
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> Username already taken!</p>
+    {% else %}
+      <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">You will not be able to change this later.</p>
+    {% endif %}
+  </div>
+  
+  <div class="mb-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+    {{ form.password1 }}
+    <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Minimum 8 characters.</p>
+  </div>
 
-<form method="post">
-    {% csrf_token %}
-
-    <table>
-        <tr>
-            <td>{{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.password1.label_tag }}</td>
-            <td>{{ form.password1 }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.password2.label_tag }}</td>
-            <td>{{ form.password2 }}</td>
-        </tr>
-    </table>
-
-    <input type="submit" value="signup">
+  <div class="mb-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm Password</label>
+    {{ form.password2 }}
+    {% for error in form.errors.password2 %}
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ error }}</p>
+    {% endfor %}
+  </div>
+  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 </form>
-{% endif %}
 
 {% endblock %}
