@@ -83,8 +83,7 @@ class ProfileEditView(LoginRequiredMixin, TemplateView):
             return redirect ('profile:own')
 
         # If form is not valid, re-render the page with the form
-        return render(request, self.template_name, 
-            {'form': form})
+        return render(request, self.template_name, {'form': form})
 
 class CourseListView(ListView):
     model = Course

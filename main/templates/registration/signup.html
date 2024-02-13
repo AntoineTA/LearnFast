@@ -7,7 +7,7 @@
 
   <div class="mb-5">
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-    {{ form.username }}
+    <input name="{{ form.username.html_name }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
     {% if form.errors.username %}
       <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> Username already taken!</p>
     {% else %}
@@ -17,13 +17,13 @@
   
   <div class="mb-5">
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-    {{ form.password1 }}
+    <input name="{{ form.password1.html_name }}" type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
     <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Minimum 8 characters.</p>
   </div>
 
   <div class="mb-5">
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm Password</label>
-    {{ form.password2 }}
+    <input name="{{ form.password2.html_name }}" type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
     {% for error in form.errors.password2 %}
       <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ error }}</p>
     {% endfor %}
