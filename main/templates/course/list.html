@@ -2,14 +2,21 @@
 {% load main_tags %}
 
 {% block content %}
-    <h1>Courses in LearnFast</h1>
-    <ul>
-        {% for course in object_list %}
-            <li><a href="{% url 'course:detail' course.id %}">{{ course }}</a></li>
-        {% endfor %}
-    </ul>
 
-    {% if request.user|has_group:'Teachers'%}
-        <a href="{% url 'course:create' %}">Add a Course</a>
-    {% endif %}
+<div class="mx-20 my-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
+        {% for course in object_list %}
+            <a href="{% url 'course:detail' course.id %}" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ course.name }}</h5>
+                <p class="font-normal text-gray-700 dark:text-gray-400">{{ course.description }}</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400 mt-4"><span class="font-bold">Instructor:</span> {% displayname course.teacher %}</p>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div>
+        {% if request.user|has_group:'Teachers'%}
+            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" href="{% url 'course:create' %}">Add a Course</a>
+        {% endif %}
+    </div>
 {% endblock %}

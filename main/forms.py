@@ -16,7 +16,7 @@ class ProfileForm(forms.ModelForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ('name',)
+        fields = ('name', 'description')
 
 class CourseFeedbackForm(forms.ModelForm):
     class Meta:

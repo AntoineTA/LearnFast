@@ -13,6 +13,7 @@ class Course(models.Model):
     students = models.ManyToManyField(User, related_name='courses')
     blocked_students = models.ManyToManyField(User, related_name='blocked_courses')
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='courses_taught')
+    description = models.TextField()
 
     def __str__(self):
         return self.name
