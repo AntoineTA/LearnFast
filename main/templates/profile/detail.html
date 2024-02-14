@@ -9,7 +9,12 @@
         <div class="flex items-center gap-4">
             <img class="w-36 h-36 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="">
             <div class="font-medium dark:text-white ml-1">
-                <div>{% displayname user %}</div>
+                <div>
+                    {% displayname user %}
+                    {% if user.first_name or user.last_name %}
+                        <span class="text-sm text-gray-500 dark:text-gray-400 font-normal"> ({{ user.username }})</span>
+                    {% endif %}
+                </div>
                 <div class="text-sm text-gray-500 dark:text-gray-400">Joined in {{ user.date_joined|date:"F Y" }}</div>
                 <div class="mt-5 italic text-sm text-gray-500 dark:text-gray-400"> {{ user.status }}</div>
             </div>
