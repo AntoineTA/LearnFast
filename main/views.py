@@ -76,7 +76,7 @@ class ProfileEditView(LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = ProfileForm(request.POST, instance=request.user)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
             form.save()

@@ -5,7 +5,7 @@
 <div class="md:flex mx-20 my-20">
     <!-- Left Column -->
     <div class="md:w-2/5 md:mx-5 mb-10">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="flex items-center gap-4">
             <label for="dropzone-file" class="flex flex-col items-center justify-center w-36 h-36 rounded-full border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -16,7 +16,7 @@
                     </svg>
                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Change Avatar</span></p>
                 </div>
-                <input id="dropzone-file" type="file" class="hidden" />
+                <input name="{{ form.avatar.html_name }}" id="dropzone-file" type="file" class="hidden" />
             </label>
             <div class="font-normal dark:text-white ml-1">
                 <div>
