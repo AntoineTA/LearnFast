@@ -1,25 +1,30 @@
 {% extends "base.html" %}
+{% load main_tags %}
 
 {% block content %}
-<h1>Add Materials</h1>
+<form class="max-w-sm mx-auto" method="post" enctype="multipart/form-data">
+  <h2 class="text-2xl font-extrabold dark:text-white my-2">Add Materials</h2>
+  {% csrf_token %}
+  <div class="mb-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+    <input type="text" name="{{ form.name.html_name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+    {% if form.errors.name %}
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">This field is required...</p>
+    {% endif %}
+  </div>
+  
+  <div class="mb-5">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+      <input name="{{ form.file.html_name }}" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" required>
+    {% if form.errors.file %}
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-normal">{{ errors.file }}</p>
+    {% endif %}
+  </div>
 
-{% if form.errors %}
-    {{ form.errors }}
-{% endif %}
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-        <tr>
-            <td>{{ form.name.label_tag }}</td>
-            <td>{{ form.name }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.file.label_tag }}</td>
-            <td>{{ form.file }}</td>
-        </tr>
-    </table>
-
-    <input type="submit" value="save">
+  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
 </form>
 {% endblock %}
+
+
+
+

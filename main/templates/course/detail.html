@@ -1,41 +1,26 @@
 {% extends "base.html" %}
+{% load main_tags %}
 
 {% block content %}
+<div class="md:flex mx-20 my-10">
 
-<h1>{{ course.name }}</h1>
+<!-- Left Column -->
+<div class="md:w-2/5 md:mx-5 mb-10">
+    {% include "./info.html" %}
+</div>
 
-{% if request.user in course.blocked_students.all %}
-    <div>You have been block from this course.</div>
-{% else %}
+<!-- Right column -->
+<div class="md:w-3/5 md:ml-20">
+    <div>
+        {% include "./material/list.html" %}
+    </div>
 
-    <table>
-        <tr>
-            <td>Name</td>
-            <td>{{ course.name }}</td>
-        </tr>
-        <tr>
-            <td>Teacher</td>
-            <td>{{ course.teacher }}</td>
-        </tr>
-    </table>
+    {% if request.user|has_group:'Teachers'%}
+    <div class="mt-10">
+        {% include "./student/list.html" %}
+    </div>
+    {% endif %}
 
-    {% include "./material/list.html" %}
-    {% include "./feedback/list.html" %}
+</div>
 
-    {% include "./student/list.html" %}
-
-    {% include "./enroll.html" %}
-{% endif %}
-
-
-
-
-
-
-
-    
-
-
-
-    
 {% endblock %}

@@ -42,3 +42,12 @@ def get_initials(user):
         return user.first_name[0:2]
     else:
         return user.username[0:2]
+
+@register.simple_tag
+def display_size(size):
+    if size < 1024:
+        return str(size) + ' B'
+    elif size < 1024 * 1024:
+        return str(round(size / 1024, 2)) + ' KB'
+    else:
+        return str(round(size / (1024 * 1024), 2)) + ' MB'
