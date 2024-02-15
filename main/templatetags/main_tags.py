@@ -33,3 +33,12 @@ def displayrole(user):
 def is_online(user):
     # Check if the user has made a request in the last minute
     return user.last_request >= timezone.now() - timedelta(minutes=5)
+
+@register.simple_tag
+def get_initials(user):
+    if user.first_name and user.last_name:
+        return user.first_name[0] + user.last_name[0]
+    elif user.first_name:
+        return user.first_name[0:2]
+    else:
+        return user.username[0:2]

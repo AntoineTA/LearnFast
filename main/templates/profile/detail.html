@@ -7,7 +7,13 @@
     <!-- Left Column -->
     <div class="md:w-2/5 md:mx-5 mb-10">
         <div class="flex items-center gap-4">
-            <img class="w-36 h-36 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="">
+            <div class="w-36 h-36 relative inline-flex items-center justify-center overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="{{ user.username }}'s avatar">
+                {% else %}
+                    <span class="text-5xl font-medium text-gray-600 dark:text-gray-300 uppercase">{% get_initials user %}</span>
+                {% endif %}
+            </div>  
             <div class="font-medium dark:text-white ml-1">
                 <div>
                     {% displayname user %}
