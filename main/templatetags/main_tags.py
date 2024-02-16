@@ -1,6 +1,7 @@
 from django import template
 from datetime import timedelta
 from django.utils import timezone
+from django.db import models
 
 register = template.Library() 
 
@@ -51,3 +52,21 @@ def display_size(size):
         return str(round(size / 1024, 2)) + ' KB'
     else:
         return str(round(size / (1024 * 1024), 2)) + ' MB'
+
+@register.simple_tag
+def relative_time(time):
+    now = timezone.now()
+    if time > now - timedelta(days=1):
+        return 'Today'
+    elif time > now - timedelta(days=2):
+        return 'Yesterday'
+    else:
+        return time.strftime('%d %b %Y')
+
+@register.filter
+def has_feedback(user, course):
+    return course.feedbacks.filter(author=user).exists()
+
+@register.simple_tag
+def avg_grade(course):
+    return course.feedbacks.aggregate(models.Avg('grade'))['grade__avg']

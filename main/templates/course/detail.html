@@ -15,6 +15,10 @@
         {% include "./material/list.html" %}
     </div>
 
+    <div class="mt-10">
+        {% include "./feedback/list.html" %}
+    </div>
+
     {% if request.user|has_group:'Teachers'%}
     <div class="mt-10">
         {% include "./student/list.html" %}

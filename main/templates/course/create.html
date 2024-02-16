@@ -7,13 +7,20 @@
     <div class="mb-5">
       <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Course Name</label>
       <input type="text" name="{{ form.name.html_name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+      {% if form.errors.description %}
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{ form.errors.name }}</p>
+      {% else %}
+        <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Max. 100 characters</p>
+      {% endif %}
     </div>
     
     <div class="mb-5">
       <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
       <textarea name="{{ form.description.html_name }}" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="This course is for..."></textarea>
       {% if form.errors.description %}
-          <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">This field is required...</p>
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{ form.errors.description }}</p>
+      {% else %}
+        <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Max. 1000 characters</p>
       {% endif %}
     </div>
 
