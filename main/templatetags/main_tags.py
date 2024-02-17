@@ -11,7 +11,11 @@ def has_group(user, group_name):
     return user.groups.filter(name=group_name).exists()
 
 @register.filter
-def unread_notifications(user):
+def has_unread_notifications(user):
+    return user.notifications.filter(read=False).exists()
+
+@register.simple_tag
+def unread_notifications_count(user):
     return user.notifications.filter(read=False).count()
 
 @register.simple_tag

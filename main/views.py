@@ -118,7 +118,7 @@ class CourseEnrollView(LoginRequiredMixin, UserPassesTestMixin, RedirectView):
         course.students.add(self.request.user)
         Notification.objects.create(
             user=course.teacher,
-            text=f'{self.request.user} enrolled in your course {course.name}',
+            text=f'{self.request.user} enrolled in {course.name}',
             link=reverse('course:detail', kwargs={'pk': course.pk}))
 
         return reverse('course:detail', kwargs={'pk': self.kwargs['pk']})
@@ -161,7 +161,7 @@ class CourseMaterialAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
         for student in course.students.all():
             Notification.objects.create(
                 user=student,
-                text=f'New material available in {course.name}',
+                text=f'New material in {course.name}',
                 link=reverse('course:detail', kwargs={'pk': course.pk}))
 
         return reverse('course:detail', kwargs={'pk': self.kwargs['pk']})
@@ -213,11 +213,3 @@ class NotificationUnreadView(LoginRequiredMixin, RedirectView):
         notification.read = False
         notification.save()
         return reverse('profile:own') + '#notifications'
-
-# class NotificationBadgeView(LoginRequiredMixin, TemplateView):
-#     template_name = 'notification/badge.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['unread_count'] = Notification.objects.filter(user=self.request.user, read=False).count()
-#         return context
