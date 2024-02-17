@@ -14,7 +14,9 @@ profile_patterns = ([
     path('list', views.UserListView.as_view(), name='list'),
     path('<int:pk>', views.ProfileView.as_view(), name='detail'),
     path('edit', views.ProfileEditView.as_view(), name='edit'),
-    path('notifications', views.NotificationListView.as_view(), name='notifications'),
+    path('notification/read/<int:notif_id>', views.NotificationReadView.as_view(), name='notification_read'),
+    path('notification/unread/<int:notif_id>', views.NotificationUnreadView.as_view(), name='notification_unread'),
+    path('notification/delete/<int:notif_id>', views.NotificationDeleteView.as_view(), name='notification_delete'),
 ], 'profile')
 
 course_patterns = ([

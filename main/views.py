@@ -194,15 +194,25 @@ class CourseStudentUnblockView(LoginRequiredMixin, UserPassesTestMixin, Redirect
 
         return reverse('course:detail', kwargs={'pk': self.kwargs['pk']})
 
-class NotificationListView(LoginRequiredMixin, ListView):
-    model = Notification
-    template_name = 'profile/notifications.html'
+class NotificationReadView(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        notification = get_object_or_404(Notification, id=kwargs['notif_id'])
+        notification.read = True
+        notification.save()
+        return reverse('profile:own') + '#notifications'
 
-    def get_queryset(self):
-        queryset = super().get_queryset().filter(user=self.request.user)
-        # Mark all notifications as read
-        queryset.filter(read=False).update(read=True)
-        return queryset.order_by('-created_at')
+class NotificationDeleteView(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        notification = get_object_or_404(Notification, id=kwargs['notif_id'])
+        notification.delete()
+        return reverse('profile:own') + '#notifications'
+
+class NotificationUnreadView(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        notification = get_object_or_404(Notification, id=kwargs['notif_id'])
+        notification.read = False
+        notification.save()
+        return reverse('profile:own') + '#notifications'
 
 # class NotificationBadgeView(LoginRequiredMixin, TemplateView):
 #     template_name = 'notification/badge.html'

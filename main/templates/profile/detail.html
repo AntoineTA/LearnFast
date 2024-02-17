@@ -67,7 +67,14 @@
 
     <!-- Right column -->
     <div class="md:w-3/5 md:ml-20">
-        {% include './user_courses.html' %}
+        <div>
+            {% include './user_courses.html' %}
+        </div>
+        <div id="notifications" class="mt-10">
+            {% if user == request.user %}
+                {% include './notifications.html' %}
+            {% endif %}
+        </div>
     </div>
 </div>
 
