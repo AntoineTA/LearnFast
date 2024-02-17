@@ -4,7 +4,7 @@
   <div>
     <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
       <span class="sr-only">Open user menu</span>
-      {% include 'main/avatar.html' %}
+      {% include 'avatar.html' %}
     </button>
     {% if request.user|has_unread_notifications %}
       <div class="relative inline-flex items-center justify-center w-4 h-4 text-xs font-medium text-white bg-red-500 rounded-full -top-10 -end-5 dark:border-gray-900">{% unread_notifications_count request.user %}</div>
