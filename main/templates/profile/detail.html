@@ -1,37 +1,82 @@
 {% extends "base.html" %}
+{% load main_tags %}
 
 {% block content %}
-    <h1>{{ user.username }}'s Profile</h1>
-    <p>This is a profile</p>
-    <table>
-        <tr>
-            <td>First Name</td>
-            <td>{{ user.first_name }}</td>
-        </tr>
-        <tr>
-            <td>Last Name</td>
-            <td>{{ user.last_name }}</td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td>{{ user.email }}</td>
-        </tr>
-        <tr>
-            <td>Company</td>
-            <td>{{ user.company }}</td>
-        </tr>
-        <tr>
-            <td>Bio</td>
-            <td>{{ user.bio }}</td>
-        </tr>
-    </table>
+<div class="md:flex mx-20 my-20">
 
-    {% if user == request.user %}
-        <a href="{% url 'profile:edit' %}">Edit</a>
-        <h2>Your Courses</h2>
-        {% for course in user.courses.all %}
-            <p>{{ course.name }}</p>
-        {% endfor %}
-    {% endif %}
+    <!-- Left Column -->
+    <div class="md:w-2/5 md:mx-5 mb-10">
+        <div class="flex items-center gap-4">
+            <div class="w-36 h-36 relative inline-flex items-center justify-center overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="{{ user.username }}'s avatar">
+                {% else %}
+                    <span class="text-5xl font-medium text-gray-600 dark:text-gray-300 uppercase">{% get_initials user %}</span>
+                {% endif %}
+            </div>  
+            <div class="font-medium dark:text-white ml-1">
+                <div>
+                    {% displayname user %}
+                    {% if user.first_name or user.last_name %}
+                        <span class="text-sm text-gray-500 dark:text-gray-400 font-normal"> ({{ user.username }})</span>
+                    {% endif %}
+                </div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Joined in {{ user.date_joined|date:"F Y" }}</div>
+                <div class="mt-5 italic text-sm text-gray-500 dark:text-gray-400"> {{ user.status }}</div>
+            </div>
+        </div>
+
+        <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700 mt-10">
+            <div class="flex flex-col pb-3 mb-3">
+                <dt class="mb-1 text-gray-500 md:text-sm dark:text-gray-400">Bio</dt>
+                <dd class="text-sm text-justify font-normal">
+                    {% if user.bio %}
+                        {{ user.bio }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </dd>
+            </div>
+            <div class="flex flex-col pb-3 mb-1">
+                <dt class="mt-1 mb-1 text-gray-500 md:text-sm dark:text-gray-400">Email</dt>
+                <dd class="text-sm font-medium">
+                    {% if user.email %}
+                        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </dd>
+            </div>
+            <div class="flex flex-col pb-3">
+                <dt class="mt-1 mb-1 text-gray-500 md:text-sm dark:text-gray-400">Company</dt>
+                <dd class="text-sm font-medium">
+                    {% if user.company %}
+                        {{ user.company }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </dd>
+            </div>
+        </dl>
+        <div class="mt-5">
+            {% if user == request.user %}
+                <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" href="{% url 'profile:edit' %}">Edit Profile</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="md:w-3/5 md:ml-20">
+        <div>
+            {% include './user_courses.html' %}
+        </div>
+        <div id="notifications" class="mt-10">
+            {% if user == request.user %}
+                {% include './notifications.html' %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

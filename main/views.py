@@ -24,10 +24,13 @@ class UserListView(UserPassesTestMixin, ListView):
             queryset = queryset.filter(groups__in=[group])
         return queryset
 
-class SignupView(TemplateView):
+class SignupView(TemplateView, UserPassesTestMixin):
     template_name = 'registration/signup.html'
 
     def get(self, request):
+        if (self.request.user.is_authenticated):
+            return redirect('profile:own')
+            
         form = SignupForm()
         return render(request, self.template_name, {'form': form})
 
@@ -43,6 +46,7 @@ class SignupView(TemplateView):
 
             # Log the user in
             login(request, user)
+            return redirect('profile:own')
 
         return render(request, self.template_name, 
             {'form': form})
@@ -72,15 +76,14 @@ class ProfileEditView(LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = ProfileForm(request.POST, instance=request.user)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
             form.save()
             return redirect ('profile:own')
 
         # If form is not valid, re-render the page with the form
-        return render(request, self.template_name, 
-            {'form': form})
+        return render(request, self.template_name, {'form': form})
 
 class CourseListView(ListView):
     model = Course
@@ -115,7 +118,7 @@ class CourseEnrollView(LoginRequiredMixin, UserPassesTestMixin, RedirectView):
         course.students.add(self.request.user)
         Notification.objects.create(
             user=course.teacher,
-            text=f'{self.request.user} enrolled in your course {course.name}',
+            text=f'{self.request.user} enrolled in {course.name}',
             link=reverse('course:detail', kwargs={'pk': course.pk}))
 
         return reverse('course:detail', kwargs={'pk': self.kwargs['pk']})
@@ -158,7 +161,7 @@ class CourseMaterialAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
         for student in course.students.all():
             Notification.objects.create(
                 user=student,
-                text=f'New material available in {course.name}',
+                text=f'New material in {course.name}',
                 link=reverse('course:detail', kwargs={'pk': course.pk}))
 
         return reverse('course:detail', kwargs={'pk': self.kwargs['pk']})
@@ -191,20 +194,22 @@ class CourseStudentUnblockView(LoginRequiredMixin, UserPassesTestMixin, Redirect
 
         return reverse('course:detail', kwargs={'pk': self.kwargs['pk']})
 
-class NotificationListView(LoginRequiredMixin, ListView):
-    model = Notification
-    template_name = 'profile/notifications.html'
+class NotificationReadView(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        notification = get_object_or_404(Notification, id=kwargs['notif_id'])
+        notification.read = True
+        notification.save()
+        return reverse('profile:own') + '#notifications'
 
-    def get_queryset(self):
-        queryset = super().get_queryset().filter(user=self.request.user)
-        # Mark all notifications as read
-        queryset.filter(read=False).update(read=True)
-        return queryset.order_by('-created_at')
+class NotificationDeleteView(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        notification = get_object_or_404(Notification, id=kwargs['notif_id'])
+        notification.delete()
+        return reverse('profile:own') + '#notifications'
 
-# class NotificationBadgeView(LoginRequiredMixin, TemplateView):
-#     template_name = 'notification/badge.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['unread_count'] = Notification.objects.filter(user=self.request.user, read=False).count()
-#         return context
+class NotificationUnreadView(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        notification = get_object_or_404(Notification, id=kwargs['notif_id'])
+        notification.read = False
+        notification.save()
+        return reverse('profile:own') + '#notifications'

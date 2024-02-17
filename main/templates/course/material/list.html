@@ -1,10 +1,35 @@
-<h2>Material</h2>
-<ul>
+
+{% load main_tags %}
+
+<h2 class="text-2xl font-extrabold dark:text-white my-2">Materials</h2>
+{% if request.user in course.students.all or request.user == course.teacher %}
+<ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
     {% for material in course.materials.all %}
-        <li><a href="{{ material.file.url }}">{{ material.name }}</a></li>
+    <li class="py-3 sm:py-4 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
+        <a href="{{ material.file.url }}">
+        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+            <div class="flex-1 min-w-0">
+                <p class="text-md font-medium text-gray-900 truncate dark:text-white">
+                    {{ material.name }}
+                </p>
+                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                    {% relative_time material.uploaded_at %}
+                </p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{% display_size material.file.size %}</span>
+            </div>
+        </div>
+    </a>
+    </li>
     {% endfor %}
 </ul>
+{% else %}
+    <p class="text-gray-500 dark:text-gray-400">Please enroll to see course material</p>
+{% endif %}
 
-{% if request.user == course.teacher %}
-    <a href="{% url 'course:material_add' course.id %}">Add Material</a>
+{% if course.teacher == request.user %}
+<div class="mt-5">
+    <a class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="{% url 'course:material_add' course.id %}">Add Material</a>
+</div>
 {% endif %}

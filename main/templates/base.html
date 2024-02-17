@@ -16,29 +16,12 @@
 </head>
 
 <body>
-    {% include './main/navbar.html' %}
-    <!-- <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="{% url 'profile:list' %}">Users</a></li>
-            <li><a href="{% url 'course:list' %}">Courses</a></li>
-            {% if user.is_authenticated %}
-                <li>
-                    Welcome <a href="{% url 'profile:own' %}">{{ request.user }}</a> |
-                    <a href="{% url 'profile:notifications' %}">{{ user|unread_notifications }} unread</a>
-                </li>
-                <li><a href="{% url 'registration:logout' %}">Logout</a></li>
-            {% else  %}
-                <li><a href="{% url 'registration:signup' %}">Sign Up</a></li>
-                <li><a href="{% url 'registration:login' %}">Login</a></li>
-            {% endif %}
-            <li class="font-extralight">Test Tailwind</li>
-        </ul>
-    </nav> -->
+    {% include './main/nav/bar.html' %}
     
-    <main>
-        {% block content %}Failed to render content{% endblock %}
-    </main>
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
     
     <footer>
         <p>{% now "Y" %} LearnFast. AWD Final.</p>

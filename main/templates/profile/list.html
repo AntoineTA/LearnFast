@@ -1,17 +1,42 @@
 {% extends "base.html" %}
+{% load main_tags %}
 
 {% block content %}
-    <h1>Users of LearnFast</h1>
-    <ul>
-        {% for user in user_list %}
-            <li><a href="{% url 'profile:detail' user.id %}">{{ user.username }}</a></li>
-        {% endfor %}
-    </ul>
 
-    <form method="get">
-        <button name="group" value="" onchange="this.form.submit()">All</button>
-        <button name="group" value="Students" onchange="this.form.submit()">Students</button>
-        <button name="group" value="Teachers" onchange="this.form.submit()">Teachers</button>
-    </form>
+<div class="container mt-4 max-w-sm mx-auto">
+<form method="get">
+   <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" name="group" value="" onchange="this.form.submit()">All</button>
+   <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" name="group" value="Students" onchange="this.form.submit()">Students</button>
+   <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" name="group" value="Teachers" onchange="this.form.submit()">Teachers</button>
+</form>
 
+<ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+    {% for user in user_list %}
+    <li class="py-3 sm:py-4 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
+        <a href="{% url 'profile:detail' user.id %}">
+        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+          <div class="flex-shrink-0">
+            {% include 'main/avatar.html' %}
+          </div>
+          <div class="flex-1 min-w-0">
+             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                {% displayname user %}
+             </p>
+             <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                {% displayrole user %}
+             </p>
+          </div>
+          <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+            {% if user|is_online %}
+               <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Online</span>
+            {% else %}
+               <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">Offline</span>
+            {% endif %}
+          </div>
+        </div>
+    </a>
+    </li>
+    {% endfor %}
+ </ul>
+</div>
 {% endblock %}

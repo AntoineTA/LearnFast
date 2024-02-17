@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import TextInput, PasswordInput
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
@@ -10,12 +11,12 @@ class SignupForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'bio', 'company')
+        fields = ('first_name', 'last_name', 'email', 'status', 'bio', 'company', 'avatar')
 
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ('name',)
+        fields = ('name', 'description')
 
 class CourseFeedbackForm(forms.ModelForm):
     class Meta:
