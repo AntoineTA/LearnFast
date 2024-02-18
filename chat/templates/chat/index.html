@@ -2,7 +2,11 @@
 
 {% block content %}
 <!-- From https://django.fun/docs/channels/3/tutorial/part_2/ -->
-<textarea id="chat-log" cols="100" rows="20"></textarea><br>
+<div id="chat-log">
+    {% for message in messages reversed %}
+        <p>{{ message.author.username }}: {{ message.content }}</p>
+    {% endfor %}
+</div>
 <input id="chat-message-input" type="text" size="100"><br>
 <input id="chat-message-author" type="hidden" value={{ request.user.username }}>
 <input id="chat-message-submit" type="button" value="Send">
@@ -16,7 +20,10 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#chat-log').value += (data.author + ': ' + data.message + '\n');
+        const chatLog = document.querySelector('#chat-log');
+        const newMessage = document.createElement('p');
+        newMessage.textContent = data.author + ': ' + data.message;
+        chatLog.appendChild(newMessage);
     };
 
     chatSocket.onclose = function(e) {
