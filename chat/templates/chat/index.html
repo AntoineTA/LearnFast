@@ -4,6 +4,7 @@
 <!-- From https://django.fun/docs/channels/3/tutorial/part_2/ -->
 <textarea id="chat-log" cols="100" rows="20"></textarea><br>
 <input id="chat-message-input" type="text" size="100"><br>
+<input id="chat-message-author" type="hidden" value={{ request.user.username }}>
 <input id="chat-message-submit" type="button" value="Send">
 
 <script>
@@ -15,7 +16,7 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#chat-log').value += (data.message + '\n');
+        document.querySelector('#chat-log').value += (data.author + ': ' + data.message + '\n');
     };
 
     chatSocket.onclose = function(e) {
@@ -31,9 +32,13 @@
 
     document.querySelector('#chat-message-submit').onclick = function(e) {
         const messageInputDom = document.querySelector('#chat-message-input');
+        const authorInputDom = document.querySelector('#chat-message-author');
         const message = messageInputDom.value;
+        const author = authorInputDom.value;
+        console.log('Sending message', message, author);
         chatSocket.send(JSON.stringify({
-            'message': message
+            'message': message,
+            'author': author,
         }));
         messageInputDom.value = '';
     };
