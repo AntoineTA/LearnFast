@@ -8,6 +8,10 @@ from .forms import *
 class IndexView(TemplateView):
     template_name = 'main/index.html'
 
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('profile:own')
+
 class UserListView(UserPassesTestMixin, ListView):
     model = User
     template_name = 'profile/list.html'

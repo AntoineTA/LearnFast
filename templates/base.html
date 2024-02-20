@@ -9,13 +9,15 @@
     <meta charset="UTF-8">
     <meta name="description" content="A eLearning application for AWD Final Project">
     <title>LearnFast</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+
 
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
     {% endcompress %}
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
     {% include './nav/bar.html' %}
     
     <div>
@@ -23,11 +25,12 @@
         {% endblock %}
     </div>
     
-    <footer>
-        <p>{% now "Y" %} LearnFast. AWD Final.</p>
+    <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800 mt-auto">
+        <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">{% now "Y" %}  LearnFast. AWD Final.</span>
+        </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 </body>
-
 </html>
