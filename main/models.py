@@ -20,7 +20,7 @@ class Course(models.Model):
 
 class CourseFeedback(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='feedbacks')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='feedbacks')
     grade = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     comment = models.TextField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
