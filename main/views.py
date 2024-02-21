@@ -11,6 +11,7 @@ class IndexView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('profile:own')
+        return super().get(request)
 
 class UserListView(UserPassesTestMixin, ListView):
     model = User
@@ -56,10 +57,10 @@ class SignupView(TemplateView, UserPassesTestMixin):
             {'form': form})
 
 class LogoutRedirectView(RedirectView):
-    url = '/'
-
     def get(self, request):
         logout(request)
+        self.url = reverse('index')
+        print(self.url)
         return super().get(request)
 
 # Redirect to the user's profile page
