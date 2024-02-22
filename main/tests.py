@@ -157,15 +157,66 @@ class CourseMaterialAddTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-def test_form_valid(self):
-    self.client.login(username='testteacher', password='12345')
-    dummy_file = SimpleUploadedFile('test_file.txt', b'This is a dummy file.')
-    response = self.client.post(self.url, {'name': 'Test material', 'file': dummy_file})
-    self.assertEqual(response.status_code, 200)
-    self.assertEqual(self.course.materials.count(), 1)
+    def test_form_valid(self):
+        self.client.login(username='testteacher', password='12345')
+        dummy_file = SimpleUploadedFile('test_file.txt', b'This is a dummy file.')
+        response = self.client.post(self.url, {'name': 'Test material', 'file': dummy_file})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.course.materials.count(), 1)
 
     def test_form_invalid(self):
         self.client.login(username='testteacher', password='12345')
         response = self.client.post(self.url, {'name': 'Test material', 'file': ''})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.course.materials.count(), 0)
+
+class CourseStudentBlockTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.teacher = User.objects.create_user(username='testteacher', password='12345')
+        self.student = User.objects.create_user(username='teststudent', password='12345')
+        self.course = Course.objects.create(name='Test course', teacher=self.teacher, description='Test description')
+        self.course.students.add(self.student)
+        self.url = reverse('course:student_block', args=[self.course.id, self.student.id])
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_access_denied_if_not_teacher(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_access_granted_if_teacher(self):
+        self.client.login(username='testteacher', password='12345')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.course.blocked_students.get(id=self.student.id), self.student)
+
+class CourseStudentUnblockTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.teacher = User.objects.create_user(username='testteacher', password='12345')
+        self.student = User.objects.create_user(username='teststudent', password='12345')
+        self.course = Course.objects.create(name='Test course', teacher=self.teacher, description='Test description')
+        self.course.blocked_students.add(self.student)
+        self.url = reverse('course:student_unblock', args=[self.course.id, self.student.id])
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_access_denied_if_not_teacher(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_access_granted_if_teacher(self):
+        self.client.login(username='testteacher', password='12345')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.course.students.get(id=self.student.id), self.student)
+        self.assertEqual(self.course.blocked_students.count(), 0)
