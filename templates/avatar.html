@@ -1,8 +1,10 @@
 {% load main_tags %}
 <div class="w-8 h-8 relative inline-flex items-center justify-center overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-    {% if user.avatar %}
-        <img src="{{ user.avatar.url }}" alt="{{ user.username }}'s avatar">
+    {% with avatar_user=avatar_user|default:user %}
+    {% if avatar_user.avatar %}
+        <img src="{{ avatar_user.avatar.url }}" alt="{{ avatar_user.username }}'s avatar">
     {% else %}
-        <span class="text-md font-medium text-gray-600 dark:text-gray-300 uppercase">{% get_initials user %}</span>
+        <span class="text-md font-medium text-gray-600 dark:text-gray-300 uppercase">{% get_initials avatar_user %}</span>
     {% endif %}
+    {% endwith %}
 </div>

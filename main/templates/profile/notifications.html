@@ -16,7 +16,7 @@
                     {% endif %}
                   </p>
                 <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {% relative_time notif.created_at %}
+                  {% relative_time notif.created_at %} at {{ notif.created_at|date:"H:i" }}
                 </p>
             </div>
             <div class="relative flex space-x-2 invisible group-hover:visible">
