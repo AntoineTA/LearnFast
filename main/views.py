@@ -98,10 +98,13 @@ class CourseView(DetailView):
     model = Course
     template_name = 'course/detail.html'
 
-class CourseCreateView(LoginRequiredMixin, CreateView):
+class CourseCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Course
     template_name = 'course/create.html'
     form_class = CourseForm
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='Teachers').exists()
 
     # form_valid is called when the form is submitted and valid
     def form_valid(self, form):

@@ -91,6 +91,38 @@ class CourseEnrollTest(TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(self.teacher.courses.count(), 0)
 
+class CourseCreateTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.url = reverse('course:create')
+
+    def test_redirect_if_not_teacher(self):
+        self.user.groups.create(name='Students')
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_access_granted_if_teacher(self):
+        self.user.groups.create(name='Teachers')
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_form_valid(self):
+        self.user.groups.create(name='Teachers')
+        self.client.login(username='testuser', password='12345')
+        response = self.client.post(self.url, {'name': 'Test course', 'description': 'Test description'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.user.courses_taught.count(), 1)
+
+    def test_form_invalid(self):
+        self.user.groups.create(name='Teachers')
+        self.client.login(username='testuser', password='12345')
+        response = self.client.post(self.url, {'name': '', 'description': 'Test description'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.user.courses_taught.count(), 0)
+
 class CourseFeedbackAddTest(TestCase):
     def setUp(self):
         self.client = Client()
