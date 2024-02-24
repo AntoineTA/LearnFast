@@ -6,7 +6,7 @@
       <img src="{% static 'images/logo.svg' %}" class="h-8" alt="LearnFast Logo" />
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">LearnFast</span>
   </a>
-  {% if user.is_authenticated %}
+  {% if request.user.is_authenticated %}
     {% include './user_menu.html' %}
   {% else %}
     {% include './reg_widget.html' %}
