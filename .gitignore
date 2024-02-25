@@ -1,6 +1,6 @@
-/lf.bat
+lf.bat
 /media
-/db.sqlite3
+db.sqlite3
 node_modules/
 __pycache__/
 static/CACHE/
