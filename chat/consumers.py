@@ -22,9 +22,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         author = text_data_json['author']
         timestamp = text_data_json['timestamp']
         await self.log_message(message, author)
-        # author = await database_sync_to_async(User.objects.get)(username=text_data_json['author'])
-
-        # await database_sync_to_async(Message.objects.create)(author=author, content=message)
 
         await self.channel_layer.group_send(
             'chat',
